@@ -1,0 +1,1 @@
+This layer contains infrastructure inplementations (like databases or input/output).
