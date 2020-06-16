@@ -1,3 +1,4 @@
+import { DomainError } from "../domain-error";
 
 export class Username {
     constructor(readonly value: string) {
@@ -6,7 +7,7 @@ export class Username {
 
     private ensureValidLength(value: string) {
         if (value.length < 5) {
-            throw new Error('Invalid User Password');
+            throw new DomainError('Invalid User Password');
         }
     }
 

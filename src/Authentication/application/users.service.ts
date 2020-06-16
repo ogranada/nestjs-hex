@@ -2,6 +2,7 @@ import { Injectable, Inject } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { IUsersRepository } from "../domain/repositories/users-repository"
 import { User } from "../domain/models/user";
+import { DomainError } from "../domain/domain-error";
 
 @Injectable()
 export class UsersService {
@@ -13,7 +14,7 @@ export class UsersService {
 
   createUser(user: User): void {
     if(this.usersRepository.getUserById(user.id)) {
-      throw new Error(`The user with id ${user.id} already exists.`);
+      throw new DomainError(`The user with id ${user.id} already exists.`);
     }
     this.usersRepository.save(user);
   }

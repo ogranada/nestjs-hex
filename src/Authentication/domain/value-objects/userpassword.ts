@@ -1,5 +1,6 @@
+import { DomainError } from "../domain-error";
 
-const PASSWORD_RE = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})');
+const PASSWORD_RE = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\+\-])(?=.{8,})');
 
 export class UserPassword {
     constructor(readonly value: string) {
@@ -8,7 +9,7 @@ export class UserPassword {
 
     private ensureValidFormat(value: string) {
         if (!value.match(PASSWORD_RE)) {
-            throw new Error('Invalid User Password');
+            throw new DomainError('Invalid User Password');
         }
     }
 
