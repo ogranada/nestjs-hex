@@ -1,14 +1,17 @@
 import { DomainError } from "../domain-error";
 
-export class Username {
-    constructor(readonly value: string) {
-        this.ensureValidLength(value);
-    }
+const MIN_LENGTH = 5;
 
-    private ensureValidLength(value: string) {
-        if (value.length < 5) {
-            throw new DomainError('Invalid User Password');
-        }
+export class Username {
+
+  constructor(readonly value: string) {
+    this.ensureValidLength(value);
+  }
+
+  private ensureValidLength(value: string) {
+    if (value.length < MIN_LENGTH) {
+      throw new DomainError(`Invalid user name length, it must be at leat ${MIN_LENGTH} characters`);
     }
+  }
 
 }

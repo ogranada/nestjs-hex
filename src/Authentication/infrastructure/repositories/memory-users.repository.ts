@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IUsersRepository } from '../../domain/repositories/users-repository';
-import { User, UserIdPassword } from '../../domain/models/user';
+import { User, UserCredentials } from '../../domain/models/user';
 import { Username } from '../../domain/value-objects/username';
 import { UserPassword } from '../../domain/value-objects/userpassword';
 import { DomainError } from 'src/Authentication/domain/domain-error';
@@ -14,7 +14,7 @@ export class MemoryUsersRepository implements IUsersRepository {
     this.data = [];
   }
 
-  updatePassword(user: UserIdPassword, newPassword: UserPassword): void {
+  updatePassword(user: UserCredentials, newPassword: UserPassword): void {
     const storedUser = this.getUserById(user.id);
     if (storedUser && storedUser.password === user.password) {
       this.save(storedUser.extend({ password: newPassword } as User));

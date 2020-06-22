@@ -7,7 +7,7 @@ export interface IDomainException {
 
 export class DomainError extends Error {
 
-  private status: number;
+  private status: Number;
 
   constructor(message='Domain Error', status=406) {
     super(message);

@@ -1,7 +1,7 @@
 import { Injectable, Inject } from "@nestjs/common";
 import { JwtService } from '@nestjs/jwt';
 import { IUsersRepository } from "../domain/repositories/users-repository"
-import { User, UserIdPassword } from "../domain/models/user";
+import { User, UserCredentials } from "../domain/models/user";
 import { DomainError } from "../domain/domain-error";
 import { UserPassword } from "../domain/value-objects/userpassword";
 
@@ -20,7 +20,7 @@ export class UsersService {
     this.usersRepository.save(user);
   }
 
-  changeUserPassword(user: UserIdPassword, newPassword: UserPassword) {
+  changeUserPassword(user: UserCredentials, newPassword: UserPassword) {
     this.usersRepository.updatePassword(user, newPassword);
     return true;
   }

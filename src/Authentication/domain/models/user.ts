@@ -70,7 +70,7 @@ export class User {
 
 }
 
-export class UserIdPassword {
+export class UserCredentials {
   readonly id: string;
   readonly password: UserPassword;
 
@@ -82,8 +82,8 @@ export class UserIdPassword {
     this.password = password;
   }
 
-  static create(user: UserDto): UserIdPassword {
-    return new UserIdPassword(
+  static create(user: UserDto): UserCredentials {
+    return new UserCredentials(
       user.id,
       new UserPassword(user.password),
     );
