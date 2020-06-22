@@ -13,3 +13,12 @@ export class UserDto {
   @IsString()
   readonly lastname: string;
 }
+
+export class ChangeUserPasswordDto {
+  @IsUUID()
+  readonly id: string;
+  @IsString()
+  readonly password: string;
+  @IsString()
+  readonly newPassword: string;
+}

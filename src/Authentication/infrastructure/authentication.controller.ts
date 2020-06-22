@@ -1,12 +1,13 @@
-import { Controller, Get, Post, Body, ValidationPipe, Inject, UseGuards, Req, Res, UseFilters, ExceptionFilter, ArgumentsHost, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, Inject, UseGuards, Req, Res, UseFilters, ExceptionFilter, ArgumentsHost, HttpException, Put, Param } from '@nestjs/common';
 import { Response, json } from 'express';
-import { User } from '../domain/models/user';
-import { UserDto } from '../domain/data-transfer-objects/user-dto';
+import { User, UserIdPassword } from '../domain/models/user';
+import { UserDto, ChangeUserPasswordDto } from '../domain/data-transfer-objects/user-dto';
 import { UsersService } from '../application/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { DomainExceptionFilter } from './error.filter';
+import { UserPassword } from '../domain/value-objects/userpassword';
 
-@Controller('/api/v1/user')
+@Controller('/api/v1/auth')
 @UseFilters(new DomainExceptionFilter())
 export class AuthenticationController {
   constructor(
@@ -15,12 +16,29 @@ export class AuthenticationController {
 
 
   @UseGuards(AuthGuard('jwt'))
-  @Get()
-  getApiStatus(): any[] {
-    return this.usersService.getUsers();
+  @Get('status')
+  getApiStatus(): any {
+    return {
+      status: 'OK'
+    };
   }
 
-  @Post()
+  @UseGuards(AuthGuard('jwt'))
+  @Put('/user/')
+  async changePass(
+    @Body(new ValidationPipe({ transform: true })) userData: ChangeUserPasswordDto
+  ) {
+    const user = UserIdPassword.create({
+      id: userData.id,
+      password: userData.password
+    } as UserDto);
+    const res = this.usersService.changeUserPassword(user, new UserPassword(userData.newPassword));
+    return {
+      message: 'status changed'
+    };
+  }
+
+  @Post('register')
   registerNewUser(
     @Body(new ValidationPipe({ transform: true })) user: UserDto
   ) {

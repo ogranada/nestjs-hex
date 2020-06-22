@@ -1,4 +1,10 @@
 
+export interface IDomainException {
+  statusCode: Number;
+  message: String[];
+  error: String;
+};
+
 export class DomainError extends Error {
 
   private status: number;
@@ -10,6 +16,14 @@ export class DomainError extends Error {
 
   getStatus() {
     return this.status;
+  }
+
+  getResponse(): IDomainException {
+    return {
+      statusCode: this.status,
+      message: [ this.message ],
+      error: 'Domain Error'
+    };
   }
 
 }

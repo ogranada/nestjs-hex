@@ -48,7 +48,17 @@ export class User {
     } as UserDto;
   }
 
-  static create(user: UserDto) {
+  extend(patch: User): User {
+    return new User(
+      patch.id || this.id,
+      patch.username || this.username,
+      patch.password || this.password,
+      patch.firstname || this.firstname,
+      patch.lastname || this.lastname
+    );
+  }
+
+  static create(user: UserDto): User {
     return new User(
       user.id || uuid(),
       new Username(user.username),
@@ -57,4 +67,26 @@ export class User {
       user.lastname
     );
   }
+
+}
+
+export class UserIdPassword {
+  readonly id: string;
+  readonly password: UserPassword;
+
+  constructor(
+    id: string,
+    password: UserPassword
+  ) {
+    this.id = id;
+    this.password = password;
+  }
+
+  static create(user: UserDto): UserIdPassword {
+    return new UserIdPassword(
+      user.id,
+      new UserPassword(user.password),
+    );
+  }
+
 }

@@ -1,4 +1,4 @@
-import { User } from "../models/user";
+import { User, UserIdPassword } from "../models/user";
 import { Username } from "../value-objects/username";
 import { UserPassword } from "../value-objects/userpassword";
 
@@ -7,5 +7,6 @@ export interface IUsersRepository {
   getUserByUsername(username: Username): User;
   getUsersList(): User[];
   save(user: User): void;
-  validateUser(username: Username, password: UserPassword)
+  validateUser(username: Username, password: UserPassword): User|null;
+  updatePassword(user: UserIdPassword, newPassword: UserPassword): void;
 }

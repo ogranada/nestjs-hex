@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { IUsersRepository } from '../../domain/repositories/users-repository';
-import { User } from '../../domain/models/user';
+import { User, UserIdPassword } from '../../domain/models/user';
 import { Username } from '../../domain/value-objects/username';
 import { UserPassword } from '../../domain/value-objects/userpassword';
+import { DomainError } from 'src/Authentication/domain/domain-error';
 
 @Injectable()
 export class MemoryUsersRepository implements IUsersRepository {
@@ -11,6 +12,15 @@ export class MemoryUsersRepository implements IUsersRepository {
 
   constructor() {
     this.data = [];
+  }
+
+  updatePassword(user: UserIdPassword, newPassword: UserPassword): void {
+    const storedUser = this.getUserById(user.id);
+    if (storedUser && storedUser.password === user.password) {
+      this.save(storedUser.extend({ password: newPassword } as User));
+    } else {
+      throw new DomainError('Invalid user information');
+    }
   }
 
   validateUser(username: Username, password: UserPassword): User | null {
@@ -34,7 +44,14 @@ export class MemoryUsersRepository implements IUsersRepository {
   }
 
   save(user: User): void {
-    this.data.push(user);
+    console.log(user);
+    const oldUser = this.data.filter(u => u.id === user.id).pop();
+    if (oldUser) {
+      const idx = this.data.indexOf(oldUser);
+      this.data.splice(idx, 1, user);
+    } else {
+      this.data.push(user);
+    }
   }
 
 }
