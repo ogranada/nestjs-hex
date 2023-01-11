@@ -30,7 +30,7 @@
     "@types/passport-local": "^1.0.33",
     "@types/uuid": "^8.0.0",
     "class-transformer": "^0.2.3",
-    "class-validator": "^0.12.2",
+    "class-validator": "^0.14.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
